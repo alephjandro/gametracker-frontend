@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import GameForm from "./components/GameForm";
 import GameList from "./components/GameList";
@@ -56,8 +57,6 @@ function App() {
   useEffect(() => {
     fetchGames();
   }, []);
-
-  console.log("Renderizando App...");
 
   return (
     <div className="app-container">
