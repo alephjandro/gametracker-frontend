@@ -20,9 +20,22 @@ function BibliotecaJuegos() {
     <div>
       <h2>Biblioteca de Juegos</h2>
       <FormularioJuego onGameAdded={cargarJuegos} />
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center'
+        }}
+      >
         {juegos.length > 0 ? (
-          juegos.map(j => <TarjetaJuego key={j._id} juego={j} />)
+          juegos.map(j => (
+            <TarjetaJuego
+              key={j._id}
+              juego={j}
+              onDelete={cargarJuegos}
+              onToggle={cargarJuegos}
+            />
+          ))
         ) : (
           <p>No hay juegos registrados.</p>
         )}
