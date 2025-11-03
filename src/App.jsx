@@ -12,7 +12,6 @@ function App() {
       <h1>GameTracker</h1>
       <BibliotecaJuegos/>
       <TarjetaJuego/>
-      <FormularioJuego/>
       <ListaResenas/>
       <FormularioResena/>
       <EstadisticasPersonales/>
