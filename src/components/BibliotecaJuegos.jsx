@@ -7,9 +7,10 @@ function BibliotecaJuegos() {
   const [juegos, setJuegos] = useState([])
 
   const cargarJuegos = () => {
-    api.get('/juegos')
+    api
+      .get('/juegos')
       .then(res => setJuegos(res.data))
-      .catch(() => console.error('Error al conectar con la API'))
+      .catch(error => console.error('Error al cargar los juegos:', error))
   }
 
   useEffect(() => {
@@ -17,24 +18,21 @@ function BibliotecaJuegos() {
   }, [])
 
   return (
-    <div>
+    <div style={{ textAlign: 'center', padding: '20px' }}>
       <h2>Biblioteca de Juegos</h2>
+
       <FormularioJuego onGameAdded={cargarJuegos} />
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'center'
-        }}
-      >
+
+      <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        gap: '20px',
+        marginTop: '20px'
+      }}>
         {juegos.length > 0 ? (
-          juegos.map(j => (
-            <TarjetaJuego
-              key={j._id}
-              juego={j}
-              onDelete={cargarJuegos}
-              onToggle={cargarJuegos}
-            />
+          juegos.map(juego => (
+            <TarjetaJuego key={juego._id} juego={juego} onUpdate={cargarJuegos} />
           ))
         ) : (
           <p>No hay juegos registrados.</p>

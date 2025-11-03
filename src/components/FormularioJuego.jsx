@@ -24,7 +24,6 @@ function FormularioJuego({ onGameAdded }) {
   const handleSubmit = async e => {
     e.preventDefault()
     try {
-      console.log('Datos a enviar:', form)
       await api.post('/juegos', form)
       if (onGameAdded) onGameAdded()
       setForm({
@@ -74,4 +73,3 @@ function FormularioJuego({ onGameAdded }) {
 }
 
 export default FormularioJuego
-
