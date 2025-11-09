@@ -23,6 +23,8 @@ function FormularioJuego({ onGameAdded }) {
 
   const handleSubmit = async e => {
     e.preventDefault()
+    console.log('handleSubmit ejecutado', form) 
+
     try {
       await api.post('/juegos', form)
       if (onGameAdded) onGameAdded()
@@ -73,3 +75,4 @@ function FormularioJuego({ onGameAdded }) {
 }
 
 export default FormularioJuego
+
