@@ -23,7 +23,7 @@ function FormularioJuego({ onGameAdded }) {
 
   const handleSubmit = async e => {
     e.preventDefault()
-    console.log('handleSubmit ejecutado', form) 
+    console.log('handleSubmit ejecutado', form)
 
     try {
       await api.post('/juegos', form)
@@ -44,35 +44,48 @@ function FormularioJuego({ onGameAdded }) {
   }
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          width: '300px',
-          padding: '15px',
-          border: '1px solid #ccc',
-          borderRadius: '8px',
-          boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
-        }}
-      >
-        <input name="titulo" placeholder="Título" value={form.titulo} onChange={handleChange} required />
-        <input name="genero" placeholder="Género" value={form.genero} onChange={handleChange} required />
-        <input name="plataforma" placeholder="Plataforma" value={form.plataforma} onChange={handleChange} required />
-        <input name="añolanzamiento" type="number" placeholder="Año de lanzamiento" value={form.añolanzamiento} onChange={handleChange} required />
-        <input name="desarrollador" placeholder="Desarrollador" value={form.desarrollador} onChange={handleChange} required />
-        <input name="imagenPortada" placeholder="URL de la imagen" value={form.imagenPortada} onChange={handleChange} />
-        <textarea name="descripcion" placeholder="Descripción" value={form.descripcion} onChange={handleChange} />
-        <label>
-          <input name="completado" type="checkbox" checked={form.completado} onChange={handleChange} /> Completado
+    <div className="form-wrapper">
+      <form onSubmit={handleSubmit} className="game-form-layout">
+        <div className="campo">
+          <input name="titulo" placeholder="Título" value={form.titulo} onChange={handleChange} required />
+        </div>
+        <div className="campo">
+          <input name="genero" placeholder="Género" value={form.genero} onChange={handleChange} required />
+        </div>
+        <div className="campo">
+          <input name="plataforma" placeholder="Plataforma" value={form.plataforma} onChange={handleChange} required />
+        </div>
+        <div className="campo">
+          <input name="añolanzamiento" type="number" placeholder="Año de lanzamiento" value={form.añolanzamiento} onChange={handleChange} required />
+        </div>
+        <div className="campo">
+          <input name="desarrollador" placeholder="Desarrollador" value={form.desarrollador} onChange={handleChange} required />
+        </div>
+        <div className="campo">
+          <input name="imagenPortada" placeholder="URL de la imagen" value={form.imagenPortada} onChange={handleChange} />
+        </div>
+
+        {form.imagenPortada && (
+          <img
+            src={form.imagenPortada}
+            alt="Preview portada"
+            className="preview-portada"
+          />
+        )}
+
+        <div className="campo">
+          <textarea name="descripcion" placeholder="Descripción" value={form.descripcion} onChange={handleChange} />
+        </div>
+
+        <label className="checkbox">
+          <input name="completado" type="checkbox" checked={form.completado} onChange={handleChange} />
+          Completado
         </label>
-        <button type="submit">Agregar Juego</button>
+
+        <button type="submit" className="primary boton-enviar">Agregar Juego</button>
       </form>
     </div>
   )
 }
 
 export default FormularioJuego
-

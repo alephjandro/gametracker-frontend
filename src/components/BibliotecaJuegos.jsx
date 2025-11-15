@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import api from '../services/api'
 import TarjetaJuego from './TarjetaJuego'
-import FormularioJuego from './FormularioJuego'
 
 export default function BibliotecaJuegos() {
   const [juegos, setJuegos] = useState([])
@@ -34,10 +33,9 @@ export default function BibliotecaJuegos() {
   }
 
   return (
-    <div style={{ textAlign: 'center', padding: 20 }}>
-      <h2>Biblioteca de Juegos</h2>
-      <FormularioJuego onGameAdded={cargarJuegos} />
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 20, marginTop: 20 }}>
+    <div className="biblioteca-section">
+      <h2 className="biblioteca-titulo">Biblioteca de Juegos</h2>
+      <div className="games-grid">
         {juegos.length > 0 ? (
           juegos.map(j => (
             <TarjetaJuego
@@ -48,7 +46,9 @@ export default function BibliotecaJuegos() {
             />
           ))
         ) : (
-          <p>No hay juegos registrados.</p>
+          <div className="empty-state">
+            <p>No hay juegos registrados.</p>
+          </div>
         )}
       </div>
     </div>

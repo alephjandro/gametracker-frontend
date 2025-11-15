@@ -1,77 +1,124 @@
 import { useState } from 'react'
 import api from '../services/api'
 
-export default function FormularioResena({ juegoId, onReviewAdded }) {
-  const [form, setForm] = useState({
+export default function FormularioResena({ juegoId, onResenaAgregada }) {
+  const [nuevaResena, setNuevaResena] = useState({
     textoResena: '',
-    puntuacion: 0
+    puntuacion: '',
+    horasJugadas: '',
+    dificultad: 'Normal',
+    recomendar: true
   })
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setForm(prev => ({ ...prev, [name]: value }))
-  }
-
-  const handleStarClick = (value) => {
-    setForm(prev => ({ ...prev, puntuacion: value }))
-  }
-
- const handleSubmit = async (e) => {
-  e.preventDefault()
-  if (!juegoId) return
-  if (!form.textoResena.trim() || form.puntuacion === 0) return
-  try {
-    const data = {
-      textoResena: form.textoResena.trim(),
-      puntuacion: form.puntuacion,
-      juegoId
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!juegoId) return
+    try {
+      const datosEnvio = {
+        textoResena: nuevaResena.textoResena,
+        puntuacion: nuevaResena.puntuacion,
+        horasJugadas: nuevaResena.horasJugadas,
+        dificultad: nuevaResena.dificultad,
+        recomendaria: nuevaResena.recomendar,
+        juegoId
+      }
+      const res = await api.post('/reviews', datosEnvio)
+      if (onResenaAgregada) onResenaAgregada(res.data)
+      setNuevaResena({
+        textoResena: '',
+        puntuacion: '',
+        horasJugadas: '',
+        dificultad: 'Normal',
+        recomendar: true
+      })
+    } catch (error) {
+      console.error('Error al agregar reseña:', error)
     }
-    const res = await api.post('/reviews', data) 
-    setForm({ textoResena: '', puntuacion: 0 })
-    if (onReviewAdded && res.data) onReviewAdded(res.data)
-  } catch (err) {
-    console.error(err)
   }
-}
-
-
-  if (!juegoId) return null
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 6,
-        marginTop: 10,
-        borderTop: '1px solid #ddd',
-        paddingTop: 10
-      }}
-    >
-      <textarea
-        name="textoResena"
-        placeholder="Escribe tu reseña..."
-        value={form.textoResena}
-        onChange={handleChange}
-        required
-      />
-      <div style={{ display: 'flex', gap: 5 }}>
-        {[1, 2, 3, 4, 5].map(star => (
-          <span
-            key={star}
-            onClick={() => handleStarClick(star)}
-            style={{
-              cursor: 'pointer',
-              fontSize: 20,
-              color: star <= form.puntuacion ? '#f5c518' : '#ccc'
-            }}
-          >
-            ★
-          </span>
-        ))}
-      </div>
-      <button type="submit">Agregar Reseña</button>
-    </form>
+    <div className="formulario-container">
+      <h4 className="formulario-titulo">Publicar reseña</h4>
+      <form onSubmit={handleSubmit} className="formulario">
+        {}
+        <div className="campo">
+          <textarea
+            placeholder="Escribe tu reseña..."
+            value={nuevaResena.textoResena}
+            onChange={(e) => setNuevaResena({ ...nuevaResena, textoResena: e.target.value })}
+          />
+        </div>
+
+        {}
+        <div className="campos-horizontal">
+          <div className="campo">
+            <label>Puntuación:</label>
+            <input
+              type="number"
+              min="1"
+              max="5"
+              value={nuevaResena.puntuacion}
+              onChange={(e) => setNuevaResena({ ...nuevaResena, puntuacion: e.target.value })}
+            />
+          </div>
+
+          <div className="campo">
+            <label>Horas jugadas:</label>
+            <input
+              type="number"
+              min="0"
+              value={nuevaResena.horasJugadas}
+              onChange={(e) => setNuevaResena({ ...nuevaResena, horasJugadas: e.target.value })}
+            />
+          </div>
+
+          <div className="campo">
+            <label>Dificultad:</label>
+            <select
+              value={nuevaResena.dificultad}
+              onChange={(e) => setNuevaResena({ ...nuevaResena, dificultad: e.target.value })}
+            >
+              <option value="Fácil">Fácil</option>
+              <option value="Normal">Normal</option>
+              <option value="Difícil">Difícil</option>
+            </select>
+          </div>
+        </div>
+
+        {}
+        <div className="recomendacion-container">
+          <label className="recomendacion-label">¿Recomendarías este juego?</label>
+          <div className="recomendacion-botones">
+            <button
+              type="button"
+              className={`recomendacion-boton ${nuevaResena.recomendar ? 'activo' : ''}`}
+              onClick={() => setNuevaResena({ ...nuevaResena, recomendar: true })}
+            >
+              Sí
+            </button>
+            <button
+              type="button"
+              className={`recomendacion-boton ${!nuevaResena.recomendar ? 'activo' : ''}`}
+              onClick={() => setNuevaResena({ ...nuevaResena, recomendar: false })}
+            >
+              No
+            </button>
+          </div>
+        </div>
+
+        {}
+        <div className="boton-container">
+          <button type="submit" className="boton-enviar">Publicar reseña</button>
+        </div>
+      </form>
+    </div>
   )
 }
+
+
+
+
+
+
+
+
